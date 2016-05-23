@@ -13,6 +13,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
@@ -39,7 +40,7 @@ public class TestFileUploadVerticle extends AbstractVerticle {
   private Router router;
   private String uploadDirectory = "webroot/upload/";
   private String uploadRelativePath = "upload/";
-  private static final int PORT = 8081;
+  public static final int PORT = 8081;
 
   /*
    * (non-Javadoc)
@@ -82,17 +83,43 @@ public class TestFileUploadVerticle extends AbstractVerticle {
         String entity = context.request().getFormAttribute("entity");
         if (entity == null || entity.hashCode() == 0) {
           context.response().setStatusCode(400);
-          context.response().end("error");
+          context.response().end(getReply(context, "error"));
         } else {
           Map<String, String> params = extractProperties(entity, context);
           handleFileUploads(entity, context, params);
-          context.response().end("ok");
+          context.response().end(getReply(context, "OK"));
         }
       } catch (Exception e) {
         LOGGER.error("", e);
         context.fail(e);
       }
     });
+  }
+
+  private Buffer getReply(RoutingContext context, String title) {
+    Buffer buffer = Buffer.buffer();
+    buffer.appendString("<h3>").appendString(title).appendString("</h3>\n\n");
+    MultiMap headers = context.request().headers();
+    buffer.appendString("HEADERS: " + headers.size()).appendString("\n");
+    headers.entries()
+        .forEach(entry -> buffer.appendString("   " + entry.getKey() + ": " + entry.getValue()).appendString("\n"));
+
+    MultiMap params = context.request().params();
+    buffer.appendString("PARAMETER: " + params.size()).appendString("\n");
+    params.entries()
+        .forEach(entry -> buffer.appendString("   " + entry.getKey() + ": " + entry.getValue()).appendString("\n"));
+
+    MultiMap formAttributes = context.request().formAttributes();
+    buffer.appendString("FORM_ATTRIBUTES: " + formAttributes.size()).appendString("\n");
+    formAttributes.entries()
+        .forEach(entry -> buffer.appendString("   " + entry.getKey() + ": " + entry.getValue()).appendString("\n"));
+
+    Set<FileUpload> fileUploads = context.fileUploads();
+    buffer.appendString("FILE UPLOADS: " + fileUploads.size()).appendString("\n");
+    fileUploads.forEach(fu -> buffer.appendString("   NAME: " + fu.name() + " | FILENAME: " + fu.fileName()
+        + " | UPLOADED: " + fu.uploadedFileName() + " | SIZE: " + fu.size()).appendString("\n"));
+
+    return buffer.appendString("USER: " + context.user());
   }
 
   private void handleFileUploads(String entityName, RoutingContext context, Map<String, String> params) {
@@ -215,6 +242,7 @@ public class TestFileUploadVerticle extends AbstractVerticle {
   private void initHttpServer(Router router, Handler<AsyncResult<Void>> handler) {
     HttpServerOptions options = new HttpServerOptions().setPort(PORT);
     HttpServer server = vertx.createHttpServer(options);
+
     server.requestHandler(router::accept).listen(result -> {
       if (result.failed()) {
         handler.handle(Future.failedFuture(result.cause()));
@@ -225,6 +253,7 @@ public class TestFileUploadVerticle extends AbstractVerticle {
   }
 
   private void logRequest(RoutingContext context) {
+
     LOGGER.info("LOGGING REQUEST FOR " + context.request().path());
 
     MultiMap headers = context.request().headers();

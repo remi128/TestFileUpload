@@ -25,8 +25,10 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 public class ExecuteRequests {
   private static final io.vertx.core.logging.Logger LOGGER = io.vertx.core.logging.LoggerFactory
       .getLogger(ExecuteRequests.class);
-  // private String HOSTNAME = "localhost";
-  private String HOSTNAME = "192.168.41.69";
+  private String HOSTNAME = "localhost";
+  // private String HOSTNAME = "192.168.41.69";
+  // private String HOSTNAME = "78.138.125.69";
+  // private String HOSTNAME = "serverscope.de";
   private int PORT = 8081;
 
   protected static Vertx vertx;

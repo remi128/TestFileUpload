@@ -21,12 +21,19 @@ public class Main extends AbstractVerticle {
   public void start(Future<Void> startFuture) throws Exception {
     DeploymentOptions options = new DeploymentOptions();
 
-    vertx.deployVerticle(TestFileUploadVerticle.class.getName(), options, result -> {
-      if (result.failed()) {
-        startFuture.fail(result.cause());
+    vertx.deployVerticle(TestFileUploadVerticle.class.getName(), options, result1 -> {
+      if (result1.failed()) {
+        startFuture.fail(result1.cause());
       } else {
-        LOGGER.info(TestFileUploadVerticle.class.getSimpleName() + " successfully launched: " + result.result());
-        startFuture.complete();
+        LOGGER.info(TestFileUploadVerticle.class.getSimpleName() + " successfully launched: " + result1.result());
+        vertx.deployVerticle(Proxy.class.getName(), options, result -> {
+          if (result.failed()) {
+            startFuture.fail(result.cause());
+          } else {
+            LOGGER.info(Proxy.class.getSimpleName() + " successfully launched: " + result.result());
+            startFuture.complete();
+          }
+        });
       }
     });
   }
