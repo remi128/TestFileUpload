@@ -1,0 +1,13 @@
+-----------------------------742398483611314711804580529
+Content-Disposition: form-data; name="action"
+
+INSERT
+-----------------------------742398483611314711804580529
+Content-Disposition: form-data; name="entity"
+
+SimpleNetRelayMapper
+-----------------------------742398483611314711804580529
+Content-Disposition: form-data; name="SimpleNetRelayMapper.name"
+
+FIREFOYYY - Testexecuted
+-----------------------------742398483611314711804580529--
