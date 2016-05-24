@@ -17,6 +17,8 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.impl.DebugHttpServerImpl;
+import io.vertx.core.impl.VertxInternal;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -241,7 +243,7 @@ public class TestFileUploadVerticle extends AbstractVerticle {
 
   private void initHttpServer(Router router, Handler<AsyncResult<Void>> handler) {
     HttpServerOptions options = new HttpServerOptions().setPort(PORT);
-    HttpServer server = vertx.createHttpServer(options);
+    HttpServer server = new DebugHttpServerImpl((VertxInternal) vertx, options);
 
     server.requestHandler(router::accept).listen(result -> {
       if (result.failed()) {
