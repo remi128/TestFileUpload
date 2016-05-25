@@ -26,14 +26,7 @@ public class Main extends AbstractVerticle {
         startFuture.fail(result1.cause());
       } else {
         LOGGER.info(TestFileUploadVerticle.class.getSimpleName() + " successfully launched: " + result1.result());
-        vertx.deployVerticle(Proxy.class.getName(), options, result -> {
-          if (result.failed()) {
-            startFuture.fail(result.cause());
-          } else {
-            LOGGER.info(Proxy.class.getSimpleName() + " successfully launched: " + result.result());
-            startFuture.complete();
-          }
-        });
+        startFuture.complete();
       }
     });
   }
