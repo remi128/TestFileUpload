@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -19,19 +20,23 @@ import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.unit.junit.Timeout;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 
 @RunWith(VertxUnitRunner.class)
 public class ExecuteRequests {
   private static final io.vertx.core.logging.Logger LOGGER = io.vertx.core.logging.LoggerFactory
       .getLogger(ExecuteRequests.class);
-  private String HOSTNAME = "localhost";
-  // private String HOSTNAME = "78.138.125.69";
+  // private String HOSTNAME = "localhost";
+  private String HOSTNAME = "78.138.125.69";
   private int PORT = 8081;
 
   protected static Vertx vertx;
   protected static HttpClient client;
-  private static final int LOOP = 1;
+  private static final int LOOP = 1000;
+
+  @Rule
+  public Timeout rule = Timeout.seconds(Integer.parseInt(System.getProperty("testTimeout", "2000")));
 
   @Test
   public void testComplexFormDefect(TestContext context) throws Exception {
