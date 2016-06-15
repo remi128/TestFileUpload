@@ -22,9 +22,9 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 
 @RunWith(VertxUnitRunner.class)
-public class ExecuteRequests {
+public class ExecuteRequestsFileUploads {
   private static final io.vertx.core.logging.Logger LOGGER = io.vertx.core.logging.LoggerFactory
-      .getLogger(ExecuteRequests.class);
+      .getLogger(ExecuteRequestsFileUploads.class);
   private String HOSTNAME = "localhost";
   // private String HOSTNAME = "78.138.125.69";
   private int PORT = 8081;
