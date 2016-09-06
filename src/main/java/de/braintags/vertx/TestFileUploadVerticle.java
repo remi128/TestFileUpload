@@ -10,10 +10,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.http.impl.DebugHttpServerImpl;
-import io.vertx.core.impl.VertxInternal;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -66,16 +62,17 @@ public class TestFileUploadVerticle extends AbstractVerticle {
   }
 
   private void initHttpServer(Router router, Handler<AsyncResult<Void>> handler) {
-    HttpServerOptions options = new HttpServerOptions().setPort(PORT);
-    HttpServer server = new DebugHttpServerImpl((VertxInternal) vertx, options);
-
-    server.requestHandler(router::accept).listen(result -> {
-      if (result.failed()) {
-        handler.handle(Future.failedFuture(result.cause()));
-      } else {
-        handler.handle(Future.succeededFuture());
-      }
-    });
+    throw new UnsupportedOperationException();
+    // HttpServerOptions options = new HttpServerOptions().setPort(PORT);
+    // HttpServer server = new DebugHttpServerImpl((VertxInternal) vertx, options);
+    //
+    // server.requestHandler(router::accept).listen(result -> {
+    // if (result.failed()) {
+    // handler.handle(Future.failedFuture(result.cause()));
+    // } else {
+    // handler.handle(Future.succeededFuture());
+    // }
+    // });
   }
 
   private void addRouter(Router router) {
