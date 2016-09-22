@@ -14,7 +14,7 @@ public class TestMail {
 
     MailMessage message = new MailMessage();
     message.setFrom("xxx@braintags.de");
-    message.setTo("to mremme <mremme@braintags.de>");
+    message.setTo("to schmitti <rschmitt@braintags.de>");
     message.setCc("cc michael <michael.remme@braintags.de>");
     message.setBcc("bcc home <home@braintags.de>");
     message.setText("this is the plain message text");
@@ -55,7 +55,7 @@ public class TestMail {
       config.setPort(Integer.parseInt(mailClientPort));
     } else
       throw new NullPointerException();
-    config.setSsl(false).setTrustAll(true).setStarttls(StartTLSOptions.DISABLED);
+    config.setSsl(false).setTrustAll(true).setStarttls(StartTLSOptions.DISABLED).setKeepAlive(true);
     return config;
 
   }
